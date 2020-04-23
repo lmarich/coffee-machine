@@ -54,3 +54,15 @@
 .coffee-oper {
   background: lightgrey;
 }
+
+.bills {
+  margin-left: 10%;
+  margin-top: 5px;
+}
+
+.bills img {
+  width: 20%;
+  margin-left: 5px;
+}
+
+
