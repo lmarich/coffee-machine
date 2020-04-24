@@ -135,13 +135,64 @@ let changeButton = document.querySelector(".change-btn");
 /*changeButton.onclick = function() {
   takeChange();
 } */
-changeButton.onclick = takeChange;
+changeButton.onclick = function () {
+  let changeBox = document.querySelector(".change-box");
+  let coins = changeBox.querySelectorAll("img");
+  if (coins.length == 0) {
+    if(balanceInput.value == 0) {
+      return;
+    }
+    changeButton.innerHTML = "Забрать сдачу";
+    takeChange();
+  } else {
+    changeButton.innerHTML = "Сдача";
+    for (let i = 0; i <coins.length; i++) {
+      coins[i].remove();
+    }
+  } 
+    
+}
 
 function takeChange() {
-  tossCoin("10");  
+  if(balanceInput.value == 0) {
+    return;
+  } 
+  if(balanceInput.value >= 10) {
+    balanceInput.value -= 10;
+    tossCoin('10');
+    return takeChange();
+  } else if(balanceInput.value >= 5) {
+    balanceInput.value -= 5;
+    tossCoin('5');
+    return takeChange();
+  }else if(balanceInput.value >= 2) {
+    balanceInput.value -= 2;
+    tossCoin('2');
+    return takeChange();
+  } else  {
+    balanceInput.value -= 1;
+    tossCoin('1');
+    return takeChange();
+  }
 }
 
 function tossCoin(cost) {
+  let imgSrc = "";
+  switch (cost) {
+    case "10" :
+      imgSrc = "img/10rub.png";
+      break;
+    case "5" :
+      imgSrc = "img/5rub.png";
+      break;
+    case "2" :
+      imgSrc = "img/2rub.png";
+      break;
+    case "1" :
+      imgSrc = "img/1rub.png";
+      break;
+  }
+  
   let changeBox = document.querySelector(".change-box");
   changeBox.style.position = "relative";
   
@@ -150,13 +201,18 @@ function tossCoin(cost) {
   let randomHeight = getRandomInt(0, changeBoxCoords.height - 50);
   
   let coin = document.createElement("img");
-  coin.setAttribute('src', 'img/10rub.png');
+  coin.setAttribute('src', imgSrc);
   coin.style.width = "50px";
   coin.style.height = "50px";
+  coin.style.cursor = "pointer";
   changeBox.append(coin);
   coin.style.position = "absolute";
   coin.style.top = randomHeight + "px";
   coin.style.left = randomWidth + "px";
+  
+  coin.onclick = function() {
+    coin.remove();
+  }
   
  // changeBox.append(coin); добавляет в конец элемента 
  // changeBox.prepend(coin); добавляет в начало
